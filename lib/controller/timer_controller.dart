@@ -52,26 +52,28 @@ class TimerController extends ChangeNotifier {
     }
   }
 
-  void skipNext({bool timeUp = false}) {
+  void skipNext({bool timeUp = false}) async {
     if (!timeUp && _isActive) return;
     if (_stageIndex == _stageQue.length - 1) return;
+    _timer.reset();
+    _remainRatio = 0;
+    notifyListeners();
+    await Future.delayed(Duration(seconds: 1));
+
+    _remainRatio = 1;
     _stageIndex++;
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
-    _remainRatio = 1;
-    _timer.reset();
     _timer.start();
     _isActive = true;
     notifyListeners();
   }
 
-  void skipBack() {
-    if (_stageIndex == 0) return;
-    _stageIndex--;
+  void skipBack() async {
+    _timer.reset();
+    _timer.pause();
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
     _remainRatio = 1;
-    _timer.reset();
-    _timer.start();
-    _isActive = true;
+    _isActive = false;
     notifyListeners();
   }
 

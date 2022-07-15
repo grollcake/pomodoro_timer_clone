@@ -29,7 +29,7 @@ class ControlSection extends StatelessWidget {
                   child: SubButton(
                     icon: Icons.skip_previous_outlined,
                     position: 'L',
-                    onPressed: timerController.stageIndex == 0 ? null : () => timerController.skipBack(),
+                    onPressed: () => timerController.skipBack(),
                   ),
                 ),
               ),
