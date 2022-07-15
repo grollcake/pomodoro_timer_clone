@@ -28,6 +28,8 @@ class TimerController extends ChangeNotifier {
 
   int get stageIndex => _stageIndex;
 
+  PausableTimer get timer => _timer;
+
   ///////////////////////////////////
   // methods
   void start() {
@@ -63,7 +65,6 @@ class TimerController extends ChangeNotifier {
   }
 
   void skipBack() {
-    if (_isActive) return;
     if (_stageIndex == 0) return;
     _stageIndex--;
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);

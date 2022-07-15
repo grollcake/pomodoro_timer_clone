@@ -24,23 +24,25 @@ class StatusSection extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20),
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: timerController.stageQue.length,
+                    itemCount: timerController.stageQue.length - timerController.stageIndex,
                     itemBuilder: (BuildContext context, int index) {
+                      int idx = timerController.stageIndex + index;
                       return Center(
                         child: Container(
                           width: 46,
                           height: 46,
                           margin: EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: timerController.stageIndex == index
-                                ? getColor(timerController.stageQue[index])
-                                : getColor(timerController.stageQue[index]).withAlpha(70),
+                            color: index == 0
+                                ? getColor(timerController.stageQue[idx])
+                                : getColor(timerController.stageQue[idx]).withAlpha(70),
                             borderRadius: BorderRadius.circular(10),
-                            border: timerController.stageIndex == index
+                            border: index == 0
                                 ? Border.all(
                                     color: Colors.white,
                                     width: 1.0,

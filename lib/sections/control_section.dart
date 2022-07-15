@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_timer_clone/components/spinning_wheel.dart';
 import 'package:provider/provider.dart';
 import 'package:pomodoro_timer_clone/components/play_button.dart';
 import 'package:pomodoro_timer_clone/components/skip_button.dart';
@@ -25,21 +26,29 @@ class ControlSection extends StatelessWidget {
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: SkipButton(
+                  child: SubButton(
                     icon: Icons.skip_previous_outlined,
                     position: 'L',
-                    onPressed: () => timerController.skipBack(),
+                    onPressed: timerController.stageIndex == 0 ? null : () => timerController.skipBack(),
                   ),
                 ),
               ),
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: SkipButton(
+                  child: SubButton(
                     icon: Icons.skip_next_outlined,
                     position: 'R',
-                    onPressed: () => timerController.skipNext(),
+                    onPressed:
+                        (timerController.isActive || timerController.stageIndex == timerController.stageQue.length - 1)
+                            ? null
+                            : () => timerController.skipNext(),
                   ),
+                ),
+              ),
+              Positioned.fill(
+                child: Center(
+                  child: SpinningWheel(timer: timerController.timer, isActive: timerController.isActive),
                 ),
               ),
               Positioned.fill(
