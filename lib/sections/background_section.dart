@@ -9,6 +9,7 @@ class BackgroundSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timerController = context.watch<TimerController>();
+
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
     final Color currentColor = getColor(timerController.stageQue[timerController.stageIndex]);
@@ -18,11 +19,14 @@ class BackgroundSection extends StatelessWidget {
 
     Duration duration = Duration(seconds: 1);
     Curve curve = Curves.linear;
-    if (timerController.remainRatio == 1 &&
-        [TimerControllerEvent.ready, TimerControllerEvent.skipNext].contains(timerController.event)) {
+    if (timerController.event == TimerControllerEvent.goNext) {
       duration = Duration.zero;
+    }
+    else if (timerController.event == TimerControllerEvent.skipNext) {
+      duration = Duration(seconds: 1);
       curve = Curves.easeOutCubic;
-    } else if (timerController.event == TimerControllerEvent.skipBack) {
+    }
+    else if (timerController.event == TimerControllerEvent.skipBack) {
       duration = Duration(milliseconds: 500);
       curve = Curves.easeOutCubic;
     }
@@ -32,7 +36,7 @@ class BackgroundSection extends StatelessWidget {
           // Current Stage Color
           Positioned.fill(
             child: Container(
-              width: screenWidth * timerController.remainRatio,
+              width: screenWidth ,
               color: currentColor,
             ),
           ),
@@ -43,7 +47,8 @@ class BackgroundSection extends StatelessWidget {
             child: AnimatedContainer(
               duration: duration,
               curve: curve,
-              width: screenWidth * (1 - timerController.remainRatio),
+              // width: screenWidth * (1 - timerController.remainRatio),
+              width: screenWidth * timerController.displayRatio,
               height: screenHeight,
               color: nextColor,
             ),
