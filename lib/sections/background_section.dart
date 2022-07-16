@@ -17,9 +17,14 @@ class BackgroundSection extends StatelessWidget {
         : getColor(timerController.stageQue[timerController.stageIndex + 1]);
 
     Duration duration = Duration(seconds: 1);
+    Curve curve = Curves.linear;
     if (timerController.remainRatio == 1 &&
         [TimerControllerEvent.ready, TimerControllerEvent.skipNext].contains(timerController.event)) {
       duration = Duration.zero;
+      curve = Curves.easeOutCubic;
+    } else if (timerController.event == TimerControllerEvent.skipBack) {
+      duration = Duration(milliseconds: 500);
+      curve = Curves.easeOutCubic;
     }
 
       return Stack(
@@ -37,7 +42,7 @@ class BackgroundSection extends StatelessWidget {
             top: 0,
             child: AnimatedContainer(
               duration: duration,
-              curve: Curves.easeOutCubic,
+              curve: curve,
               width: screenWidth * (1 - timerController.remainRatio),
               height: screenHeight,
               color: nextColor,
