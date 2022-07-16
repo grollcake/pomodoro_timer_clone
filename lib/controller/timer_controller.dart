@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:pausable_timer/pausable_timer.dart';
 import 'package:pomodoro_timer_clone/models/data.dart';
 
+enum TimerControllerEvent {
+  ready,
+  play,
+  pause,
+  countDown,
+  skipNext,
+  skipBack,
+}
+
 class TimerController extends ChangeNotifier {
   bool _isActive = false;
   late List<TimerStage> _stageQue;
@@ -9,6 +18,7 @@ class TimerController extends ChangeNotifier {
   late final PausableTimer _timer;
   late Duration _remainTime;
   double _remainRatio = 1.0;
+  TimerControllerEvent _event = TimerControllerEvent.ready;
 
   TimerController() {
     _init();
@@ -30,17 +40,21 @@ class TimerController extends ChangeNotifier {
 
   PausableTimer get timer => _timer;
 
+  TimerControllerEvent get event => _event;
+
   ///////////////////////////////////
   // methods
   void start() {
     _isActive = true;
     _timer.start();
+    _event = TimerControllerEvent.play;
     notifyListeners();
   }
 
   void pause() {
     _isActive = false;
     _timer.pause();
+    _event = TimerControllerEvent.pause;
     notifyListeners();
   }
 
@@ -57,6 +71,7 @@ class TimerController extends ChangeNotifier {
     if (_stageIndex == _stageQue.length - 1) return;
     _timer.reset();
     _remainRatio = 0;
+    _event = TimerControllerEvent.skipNext;
     notifyListeners();
     await Future.delayed(Duration(seconds: 1));
 
@@ -71,9 +86,13 @@ class TimerController extends ChangeNotifier {
   void skipBack() async {
     _timer.reset();
     _timer.pause();
-    _remainTime = _getStageDuration(_stageQue[_stageIndex]);
-    _remainRatio = 1;
     _isActive = false;
+    _remainRatio = 1;
+    _event = TimerControllerEvent.skipBack;
+    notifyListeners();
+    await Future.delayed(Duration(seconds: 1));
+
+    _remainTime = _getStageDuration(_stageQue[_stageIndex]);
     notifyListeners();
   }
 
@@ -101,6 +120,7 @@ class TimerController extends ChangeNotifier {
       skipNext(timeUp: true);
     } else {
       _remainRatio = _remainTime.inSeconds / _getStageDuration(_stageQue[_stageIndex]).inSeconds;
+      _event = TimerControllerEvent.countDown;
       notifyListeners();
     }
   }

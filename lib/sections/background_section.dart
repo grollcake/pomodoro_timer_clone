@@ -16,44 +16,34 @@ class BackgroundSection extends StatelessWidget {
         ? Color(0xFF263238)
         : getColor(timerController.stageQue[timerController.stageIndex + 1]);
 
-    return Stack(
-      children: [
-        // Current Stage Color
-        Positioned.fill(
-          child: Container(
-            width: screenWidth * timerController.remainRatio,
-            color: currentColor,
-          ),
-        ),
-        // Next Stage Color
-        Positioned(
-          left: 0,
-          top: 0,
-          child: AnimatedContainer(
-            duration: timerController.remainRatio == 1 ? Duration.zero : Duration(seconds: 1),
-            curve: Curves.easeOutCubic,
-            width: screenWidth * (1 - timerController.remainRatio),
-            height: screenHeight,
-            color: nextColor,
-          ),
-        ),
-      ],
-    );
+    Duration duration = Duration(seconds: 1);
+    if (timerController.remainRatio == 1 &&
+        [TimerControllerEvent.ready, TimerControllerEvent.skipNext].contains(timerController.event)) {
+      duration = Duration.zero;
+    }
 
-    // return Row(
-    //   children: [
-    //     AnimatedContainer(
-    //       duration: timerController.remainRatio == 1 ? Duration.zero: Duration(seconds: 1),
-    //       curve: Curves.easeInOut,
-    //       width: screenWidth * (1 - timerController.remainRatio),
-    //       color: nextColor,
-    //     ),
-    //     AnimatedContainer(
-    //       duration: timerController.remainRatio == 1 ? Duration.zero: Duration(seconds: 1),
-    //       width: screenWidth * timerController.remainRatio,
-    //       color: currentColor,
-    //     ),
-    //   ],
-    // );
+      return Stack(
+        children: [
+          // Current Stage Color
+          Positioned.fill(
+            child: Container(
+              width: screenWidth * timerController.remainRatio,
+              color: currentColor,
+            ),
+          ),
+          // Next Stage Color
+          Positioned(
+            left: 0,
+            top: 0,
+            child: AnimatedContainer(
+              duration: duration,
+              curve: Curves.easeOutCubic,
+              width: screenWidth * (1 - timerController.remainRatio),
+              height: screenHeight,
+              color: nextColor,
+            ),
+          ),
+        ],
+      );
   }
 }
