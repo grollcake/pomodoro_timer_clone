@@ -16,16 +16,18 @@ class TimerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final timerController = context.watch<TimerController>();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(timerController.remainTime.inMinutes.toString().padLeft(2, '0'), style: timeText1Style),
-        Text(
-            (timerController.remainTime.inSeconds - timerController.remainTime.inMinutes * 60)
-                .toString()
-                .padLeft(2, '0'),
-            style: timeText2Style),
-      ],
-    );
+    return timerController.event != TimerControllerEvent.finish
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(timerController.remainTime.inMinutes.toString().padLeft(2, '0'), style: timeText1Style),
+              Text(
+                  (timerController.remainTime.inSeconds - timerController.remainTime.inMinutes * 60)
+                      .toString()
+                      .padLeft(2, '0'),
+                  style: timeText2Style),
+            ],
+          )
+        : SizedBox();
   }
 }

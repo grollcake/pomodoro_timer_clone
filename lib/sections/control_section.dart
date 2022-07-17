@@ -23,29 +23,31 @@ class ControlSection extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 20),
           child: Stack(
             children: [
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SubButton(
-                    icon: Icons.skip_previous_outlined,
-                    position: 'L',
-                    onPressed: () => timerController.skipBack(),
+              if (timerController.event != TimerControllerEvent.finish)
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SubButton(
+                      icon: Icons.skip_previous_outlined,
+                      position: 'L',
+                      onPressed: () => timerController.skipBack(),
+                    ),
                   ),
                 ),
-              ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SubButton(
-                    icon: Icons.skip_next_outlined,
-                    position: 'R',
-                    onPressed:
-                        (timerController.isActive || timerController.stageIndex == timerController.stageQue.length - 1)
-                            ? null
-                            : () => timerController.skipNext(),
+              if (timerController.event != TimerControllerEvent.finish)
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: SubButton(
+                      icon: Icons.skip_next_outlined,
+                      position: 'R',
+                      onPressed: (timerController.isActive ||
+                              timerController.stageIndex == timerController.stageQue.length - 1)
+                          ? null
+                          : () => timerController.skipNext(),
+                    ),
                   ),
                 ),
-              ),
               Positioned.fill(
                 child: Center(
                   child: SpinningWheel(timer: timerController.timer, isActive: timerController.isActive),
@@ -55,7 +57,11 @@ class ControlSection extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.center,
                   child: PlayButton(
-                    icon: timerController.isActive ? Icons.pause : Icons.play_arrow_rounded,
+                    icon: timerController.event == TimerControllerEvent.finish
+                        ? Icons.replay_rounded
+                        : timerController.isActive
+                            ? Icons.pause
+                            : Icons.play_arrow_rounded,
                     onPressed: () => timerController.toggle(),
                   ),
                 ),

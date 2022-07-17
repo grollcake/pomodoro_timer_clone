@@ -19,41 +19,49 @@ class BackgroundSection extends StatelessWidget {
 
     Duration duration = Duration(seconds: 1);
     Curve curve = Curves.linear;
-    if (timerController.event == TimerControllerEvent.goNext) {
+    if (timerController.event == TimerControllerEvent.goNext || timerController.event == TimerControllerEvent.restart) {
       duration = Duration.zero;
-    }
-    else if (timerController.event == TimerControllerEvent.skipNext) {
+    } else if (timerController.event == TimerControllerEvent.skipNext) {
       duration = Duration(seconds: 1);
       curve = Curves.easeOutCubic;
-    }
-    else if (timerController.event == TimerControllerEvent.skipBack) {
+    } else if (timerController.event == TimerControllerEvent.skipBack) {
       duration = Duration(milliseconds: 500);
       curve = Curves.easeOutCubic;
     }
 
-      return Stack(
-        children: [
-          // Current Stage Color
-          Positioned.fill(
-            child: Container(
-              width: screenWidth ,
+    return Stack(
+      children: [
+        // Current Stage Color
+        Positioned.fill(
+          child: Container(
+            width: screenWidth,
+            decoration: BoxDecoration(
               color: currentColor,
             ),
           ),
-          // Next Stage Color
-          Positioned(
-            left: 0,
-            top: 0,
-            child: AnimatedContainer(
-              duration: duration,
-              curve: curve,
-              // width: screenWidth * (1 - timerController.remainRatio),
-              width: screenWidth * timerController.displayRatio,
-              height: screenHeight,
+        ),
+        // Next Stage Color
+        Positioned(
+          left: 0,
+          top: 0,
+          child: AnimatedContainer(
+            duration: duration,
+            curve: curve,
+            width: screenWidth * timerController.displayRatio,
+            height: screenHeight,
+            decoration: BoxDecoration(
               color: nextColor,
+              image: (timerController.stageIndex == timerController.stageQue.length - 1)
+                  ? DecorationImage(
+                      image: AssetImage('assets/images/finish.png'),
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    )
+                  : null,
             ),
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }

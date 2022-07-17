@@ -11,6 +11,8 @@ enum TimerControllerEvent {
   goNext,
   skipNext,
   skipBack,
+  finish,
+  restart,
 }
 
 class TimerController extends ChangeNotifier {
@@ -74,8 +76,14 @@ class TimerController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggle() {
-    if (_isActive) {
+  void toggle() async {
+    if (_event == TimerControllerEvent.finish) {
+      _event = TimerControllerEvent.restart;
+      _stageIndex = 0;
+      _remainRatio = 1;
+      notifyListeners();
+    }
+    else if (_isActive) {
       pause();
     } else {
       if (_timer.isPaused) {
@@ -87,13 +95,20 @@ class TimerController extends ChangeNotifier {
   }
 
   void goNext() async {
-    if (_stageIndex == _stageQue.length - 1) return;
-    _stageIndex++;
-    _event = TimerControllerEvent.goNext;
-    _calcDisplayRatio();
-    notifyListeners();
-    await Future.delayed(Duration(milliseconds: 100));
-    start();
+    if (_stageIndex == _stageQue.length - 1) {
+      _timer.reset();
+      _timer.pause();
+      _event = TimerControllerEvent.finish;
+      _isActive = false;
+      notifyListeners();
+    } else {
+      _stageIndex++;
+      _event = TimerControllerEvent.goNext;
+      _calcDisplayRatio();
+      notifyListeners();
+      await Future.delayed(Duration(milliseconds: 100));
+      start();
+    }
   }
 
   void skipNext() async {
@@ -132,17 +147,9 @@ class TimerController extends ChangeNotifier {
     _stageQue = [
       TimerStage.work,
       TimerStage.rest,
-      TimerStage.work,
-      TimerStage.longRest,
-      TimerStage.work,
-      TimerStage.rest,
-      TimerStage.work,
-      TimerStage.longRest,
-      TimerStage.work,
-      TimerStage.rest,
-      TimerStage.work,
-      TimerStage.longRest,
-      TimerStage.work,
+      // TimerStage.work,
+      // TimerStage.longRest,
+      // TimerStage.work,
     ];
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
     _remainRatio = _remainTime.inSeconds / _getStageDuration(_stageQue[_stageIndex]).inSeconds;
