@@ -50,7 +50,7 @@ class TimerController extends ChangeNotifier {
   TimerControllerEvent get event => _event;
 
   ///////////////////////////////////
-  // methods
+  // public methods
   void start() {
     _isActive = true;
     _timer.reset();
@@ -78,18 +78,20 @@ class TimerController extends ChangeNotifier {
 
   void toggle() async {
     if (_event == TimerControllerEvent.finish) {
-      _event = TimerControllerEvent.restart;
       _stageIndex = 0;
       _remainRatio = 1;
+      _remainTime = _getStageDuration(_stageQue[_stageIndex]);
+      _event = TimerControllerEvent.restart;
+      _calcDisplayRatio();
       notifyListeners();
     }
     else if (_isActive) {
       pause();
     } else {
-      if (_timer.isPaused) {
-        resume();
-      } else {
+      if (_event == TimerControllerEvent.restart || !_timer.isPaused) {
         start();
+      } else {
+        resume();
       }
     }
   }
@@ -147,9 +149,9 @@ class TimerController extends ChangeNotifier {
     _stageQue = [
       TimerStage.work,
       TimerStage.rest,
-      // TimerStage.work,
-      // TimerStage.longRest,
-      // TimerStage.work,
+      TimerStage.work,
+      TimerStage.longRest,
+      TimerStage.work,
     ];
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
     _remainRatio = _remainTime.inSeconds / _getStageDuration(_stageQue[_stageIndex]).inSeconds;
@@ -177,9 +179,9 @@ class TimerController extends ChangeNotifier {
       _displayRatio = 1 - ((_remainTime.inSeconds - 1) / _getStageDuration(_stageQue[_stageIndex]).inSeconds);
     } else if (_event == TimerControllerEvent.goNext) {
       _displayRatio = 0;
-    } else if (_event == TimerControllerEvent.skipNext) {
+    } else if (_event == TimerControllerEvent.skipNext|| _event == TimerControllerEvent.finish) {
       _displayRatio = 1;
-    } else if (_event == TimerControllerEvent.skipBack) {
+    } else if (_event == TimerControllerEvent.skipBack || _event == TimerControllerEvent.restart) {
       _displayRatio = 0;
     }
   }
@@ -187,11 +189,11 @@ class TimerController extends ChangeNotifier {
   Duration _getStageDuration(TimerStage stage) {
     switch (stage) {
       case TimerStage.work:
-        return Duration(seconds: 10);
+        return Duration(minutes: 5);
       case TimerStage.rest:
-        return Duration(seconds: 10);
+        return Duration(seconds: 30);
       case TimerStage.longRest:
-        return Duration(seconds: 10);
+        return Duration(minutes: 2);
     }
   }
 }

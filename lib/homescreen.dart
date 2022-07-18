@@ -8,33 +8,27 @@ import 'package:pomodoro_timer_clone/sections/timer_section.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  final timeText1Style =
-      GoogleFonts.poppins(fontSize: 144, fontWeight: FontWeight.w700, height: 0.9, color: Color(0xFF4D2020));
-  final timeText2Style =
-      GoogleFonts.poppins(fontSize: 144, fontWeight: FontWeight.w300, height: 0.9, color: Color(0xFF4D2020));
-  final statTextStyle = GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white);
-
   int currentStage = 0;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+        body: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Stack(
             alignment: Alignment.center,
             children: [
               /////////////////////////////////////////
-              // 배경 화면
+              // 배경 화면 (시간 진행 상태 노출)
               BackgroundSection(),
               /////////////////////////////////////////
               // 상단 상태
-              StatusSection(statTextStyle: statTextStyle),
+              StatusSection(),
               /////////////////////////////////////////
               // 경과 시간
-              TimerSection(timeText1Style: timeText1Style, timeText2Style: timeText2Style),
+              TimerSection(),
               /////////////////////////////////////////
               // 하단 제어 버튼들
               ControlSection()

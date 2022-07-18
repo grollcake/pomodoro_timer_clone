@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
+import 'package:pomodoro_timer_clone/styles/style.dart';
 import 'package:provider/provider.dart';
 import 'package:pomodoro_timer_clone/utils/utils.dart';
 
 class StatusSection extends StatelessWidget {
-  const StatusSection({
-    Key? key,
-    required this.statTextStyle,
-  }) : super(key: key);
-
-  final TextStyle statTextStyle;
+  const StatusSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +68,11 @@ class StatusSection extends StatelessWidget {
           height: 36,
           color: Color(0xFF374151),
           child: Center(
-            child: Text(getStageName(timerController.stageQue[timerController.stageIndex]), style: statTextStyle),
+            child: Text(
+                timerController.event == TimerControllerEvent.finish
+                    ? 'Done'
+                    : getStageName(timerController.stageQue[timerController.stageIndex]),
+                style: statTextStyle),
           ),
         )
       ],

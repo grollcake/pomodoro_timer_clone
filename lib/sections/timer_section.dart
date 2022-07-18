@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
+import 'package:pomodoro_timer_clone/styles/style.dart';
 import 'package:provider/provider.dart';
 
 class TimerSection extends StatelessWidget {
-  const TimerSection({
-    Key? key,
-    required this.timeText1Style,
-    required this.timeText2Style,
-  }) : super(key: key);
-
-  final TextStyle timeText1Style;
-  final TextStyle timeText2Style;
+  const TimerSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
