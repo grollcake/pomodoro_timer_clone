@@ -19,12 +19,12 @@ class BackgroundSection extends StatelessWidget {
 
     Duration duration = Duration(seconds: 1);
     Curve curve = Curves.linear;
-    if (timerController.event == TimerControllerEvent.goNext || timerController.event == TimerControllerEvent.restart) {
+    if (timerController.status == TimerStatus.ready) {
       duration = Duration.zero;
-    } else if (timerController.event == TimerControllerEvent.skipNext) {
-      duration = Duration(seconds: 1);
+    } else if (timerController.status == TimerStatus.skippingNext) {
+      duration = Duration(milliseconds: 500);
       curve = Curves.easeOutCubic;
-    } else if (timerController.event == TimerControllerEvent.skipBack) {
+    } else if (timerController.status == TimerStatus.skippingBack) {
       duration = Duration(milliseconds: 500);
       curve = Curves.easeOutCubic;
     }

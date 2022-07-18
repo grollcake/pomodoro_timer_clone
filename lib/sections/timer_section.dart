@@ -10,7 +10,7 @@ class TimerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final timerController = context.watch<TimerController>();
 
-    return timerController.event != TimerControllerEvent.finish
+    return timerController.status != TimerStatus.finished
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [

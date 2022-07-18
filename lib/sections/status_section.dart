@@ -20,7 +20,7 @@ class StatusSection extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: timerController.event != TimerControllerEvent.finish
+                child: timerController.status != TimerStatus.finished
                     ? Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: ListView.builder(
@@ -69,8 +69,8 @@ class StatusSection extends StatelessWidget {
           color: Color(0xFF374151),
           child: Center(
             child: Text(
-                timerController.event == TimerControllerEvent.finish
-                    ? 'Done'
+                timerController.status == TimerStatus.finished
+                    ? 'Finished'
                     : getStageName(timerController.stageQue[timerController.stageIndex]),
                 style: statTextStyle),
           ),

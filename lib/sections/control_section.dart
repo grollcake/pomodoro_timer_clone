@@ -23,7 +23,7 @@ class ControlSection extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 20),
           child: Stack(
             children: [
-              if (timerController.event != TimerControllerEvent.finish)
+              if (timerController.status != TimerStatus.finished)
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -34,14 +34,14 @@ class ControlSection extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (timerController.event != TimerControllerEvent.finish)
+              if (timerController.status != TimerStatus.finished)
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: SubButton(
                       icon: Icons.skip_next_outlined,
                       position: 'R',
-                      onPressed: (timerController.isActive ||
+                      onPressed: (timerController.status == TimerStatus.playing ||
                               timerController.stageIndex == timerController.stageQue.length - 1)
                           ? null
                           : () => timerController.skipNext(),
@@ -50,19 +50,19 @@ class ControlSection extends StatelessWidget {
                 ),
               Positioned.fill(
                 child: Center(
-                  child: SpinningWheel(timer: timerController.timer, isActive: timerController.isActive),
+                  child: SpinningWheel(timer: timerController.timer, isActive: timerController.status == TimerStatus.playing),
                 ),
               ),
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.center,
                   child: PlayButton(
-                    icon: timerController.event == TimerControllerEvent.finish
+                    icon: timerController.status == TimerStatus.finished
                         ? Icons.replay_rounded
-                        : timerController.isActive
+                        : timerController.status == TimerStatus.playing
                             ? Icons.pause
                             : Icons.play_arrow_rounded,
-                    onPressed: () => timerController.toggle(),
+                    onPressed: () => timerController.circleButton(),
                   ),
                 ),
               ),

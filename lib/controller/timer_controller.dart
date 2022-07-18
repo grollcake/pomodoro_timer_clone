@@ -2,44 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:pausable_timer/pausable_timer.dart';
 import 'package:pomodoro_timer_clone/models/data.dart';
 
-enum TimerControllerEvent {
+enum TimerStatus {
   ready,
-  start,
-  pause,
-  resume,
-  countDown,
-  goNext,
-  skipNext,
-  skipBack,
-  finish,
-  restart,
+  playing,
+  paused,
+  skippingBack,
+  skippingNext,
+  finished,
 }
 
 class TimerController extends ChangeNotifier {
-  bool _isActive = false;
   late List<TimerStage> _stageQue;
   int _stageIndex = 0;
   late final PausableTimer _timer;
   late Duration _remainTime;
-  double _remainRatio = 1.0;
-  double _displayRatio = 0.0;
-  TimerControllerEvent _event = TimerControllerEvent.ready;
+  double _progressRatio = 0.0;
+  TimerStatus _status = TimerStatus.ready;
 
   TimerController() {
     _init();
-    _timer = PausableTimer(Duration(seconds: 1), _countDown);
+    _timer = PausableTimer(Duration(seconds: 1), _timeGoesBy);
     notifyListeners();
   }
 
   ///////////////////////////////////
   // getter
-  bool get isActive => _isActive;
-
   Duration get remainTime => _remainTime;
 
-  double get remainRatio => _remainRatio;
-
-  double get displayRatio => _displayRatio;
+  double get displayRatio => _progressRatio;
 
   List<TimerStage> get stageQue => _stageQue;
 
@@ -47,97 +37,85 @@ class TimerController extends ChangeNotifier {
 
   PausableTimer get timer => _timer;
 
-  TimerControllerEvent get event => _event;
+  TimerStatus get status => _status;
 
   ///////////////////////////////////
   // public methods
+
+  // 현재 스테이지 시작
   void start() {
-    _isActive = true;
     _timer.reset();
     _timer.start();
-    _remainRatio = 1;
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
-    _event = TimerControllerEvent.start;
-    _calcDisplayRatio();
+    _status = TimerStatus.playing;
+    _calcProgressRatio();
     notifyListeners();
   }
 
+  // 일시 정지
   void pause() {
-    _isActive = false;
     _timer.pause();
-    _event = TimerControllerEvent.pause;
+    _status = TimerStatus.paused;
     notifyListeners();
   }
 
+  // 일시 정지 상태에서 재시작
   void resume() {
-    _isActive = true;
     _timer.start();
-    _event = TimerControllerEvent.resume;
+    _status = TimerStatus.playing;
     notifyListeners();
   }
 
-  void toggle() async {
-    if (_event == TimerControllerEvent.finish) {
-      _stageIndex = 0;
-      _remainRatio = 1;
-      _remainTime = _getStageDuration(_stageQue[_stageIndex]);
-      _event = TimerControllerEvent.restart;
-      _calcDisplayRatio();
-      notifyListeners();
-    }
-    else if (_isActive) {
-      pause();
-    } else {
-      if (_event == TimerControllerEvent.restart || !_timer.isPaused) {
-        start();
-      } else {
-        resume();
-      }
-    }
+  // 모든 스테이지 종료 후 재시작
+  void reset() {
+    _init();
+    _calcProgressRatio();
+    notifyListeners();
   }
 
-  void goNext() async {
-    if (_stageIndex == _stageQue.length - 1) {
-      _timer.reset();
-      _timer.pause();
-      _event = TimerControllerEvent.finish;
-      _isActive = false;
-      notifyListeners();
-    } else {
-      _stageIndex++;
-      _event = TimerControllerEvent.goNext;
-      _calcDisplayRatio();
-      notifyListeners();
-      await Future.delayed(Duration(milliseconds: 100));
+  // 메인 버튼 동작
+  void circleButton() async {
+    if (_status == TimerStatus.finished) {
+      reset();
+    } else if (_status == TimerStatus.playing) {
+      pause();
+    } else if (_status == TimerStatus.paused) {
+      resume();
+    } else if (_status == TimerStatus.ready) {
       start();
     }
   }
 
+  // 다음 스테이지로 이동
   void skipNext() async {
-    if (_isActive) return;
+    if (_status == TimerStatus.playing) return;
     if (_stageIndex == _stageQue.length - 1) return;
 
     _timer.reset();
     _timer.pause();
-    _remainRatio = 0;
-    _event = TimerControllerEvent.skipNext;
-    _calcDisplayRatio();
-    notifyListeners();
-    await Future.delayed(Duration(seconds: 1));
-
-    goNext();
-  }
-
-  void skipBack() async {
-    _timer.reset();
-    _timer.pause();
-    _isActive = false;
-    _remainRatio = 1;
-    _event = TimerControllerEvent.skipBack;
-    _calcDisplayRatio();
+    _status = TimerStatus.skippingNext;
+    _calcProgressRatio();
     notifyListeners();
     await Future.delayed(Duration(milliseconds: 500));
 
+    _stageIndex++;
+    _status = TimerStatus.ready;
+    _calcProgressRatio();
+    _remainTime = _getStageDuration(_stageQue[_stageIndex]);
+    notifyListeners();
+  }
+
+  // 현재 스테이지의 처음으로 이동
+  void skipBack() async {
+    _timer.reset();
+    _timer.pause();
+    _status = TimerStatus.skippingBack;
+    _calcProgressRatio();
+    notifyListeners();
+    await Future.delayed(Duration(milliseconds: 500));
+
+    _status = TimerStatus.ready;
+    _calcProgressRatio();
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
     notifyListeners();
   }
@@ -154,46 +132,57 @@ class TimerController extends ChangeNotifier {
       TimerStage.work,
     ];
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
-    _remainRatio = _remainTime.inSeconds / _getStageDuration(_stageQue[_stageIndex]).inSeconds;
+    _status = TimerStatus.ready;
   }
 
-  void _countDown() {
+  void _timeGoesBy() {
     _timer.reset();
     _timer.start();
 
     _remainTime -= Duration(seconds: 1);
     if (_remainTime <= Duration.zero) {
-      goNext();
+      _goNext();
     } else {
-      _remainRatio = _remainTime.inSeconds / _getStageDuration(_stageQue[_stageIndex]).inSeconds;
-      _event = TimerControllerEvent.countDown;
-      _calcDisplayRatio();
+      _status = TimerStatus.playing;
+      _calcProgressRatio();
       notifyListeners();
     }
   }
 
-  void _calcDisplayRatio() {
-    if (_event == TimerControllerEvent.start) {
-      _displayRatio = 1 - ((_remainTime.inSeconds - 1) / _getStageDuration(_stageQue[_stageIndex]).inSeconds);
-    } else if (_event == TimerControllerEvent.countDown) {
-      _displayRatio = 1 - ((_remainTime.inSeconds - 1) / _getStageDuration(_stageQue[_stageIndex]).inSeconds);
-    } else if (_event == TimerControllerEvent.goNext) {
-      _displayRatio = 0;
-    } else if (_event == TimerControllerEvent.skipNext|| _event == TimerControllerEvent.finish) {
-      _displayRatio = 1;
-    } else if (_event == TimerControllerEvent.skipBack || _event == TimerControllerEvent.restart) {
-      _displayRatio = 0;
+  void _goNext() async {
+    if (_stageIndex < _stageQue.length - 1) {
+      _stageIndex++;
+      _status = TimerStatus.ready;
+      _calcProgressRatio();
+      notifyListeners();
+      await Future.delayed(Duration(milliseconds: 100));
+      start();
+    } else {
+      _timer.reset();
+      _timer.pause();
+      _status = TimerStatus.finished;
+      notifyListeners();
+    }
+  }
+
+  void _calcProgressRatio() {
+    if (_status == TimerStatus.ready || _status == TimerStatus.skippingBack) {
+      _progressRatio = 0;
+    } else if (_status == TimerStatus.playing) {
+      _progressRatio = 1 - ((_remainTime.inSeconds - 1) / _getStageDuration(_stageQue[_stageIndex]).inSeconds);
+    } else if (_status == TimerStatus.skippingNext || _status == TimerStatus.finished) {
+      _progressRatio = 1;
     }
   }
 
   Duration _getStageDuration(TimerStage stage) {
     switch (stage) {
       case TimerStage.work:
-        return Duration(minutes: 5);
+        return Duration(minutes: 25);
       case TimerStage.rest:
-        return Duration(seconds: 30);
+        return Duration(minutes: 5);
       case TimerStage.longRest:
-        return Duration(minutes: 2);
+        return Duration(minutes: 15);
     }
   }
 }
