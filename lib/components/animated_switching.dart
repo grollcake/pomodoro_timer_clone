@@ -54,9 +54,8 @@ class _AnimatedSwitchingState extends State<AnimatedSwitching> with SingleTicker
   @override
   void didUpdateWidget(AnimatedSwitching oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Todo 여기가 뭔가 이상하게 작동해...
-    if (true || widget.child.runtimeType != oldWidget.child.runtimeType || oldWidget.key != widget.key) {
-      _oldChild = oldWidget;
+    if (widget.child.runtimeType != oldWidget.child.runtimeType || oldWidget.child.key != widget.child.key) {
+      _oldChild = oldWidget.child;
       _isOutgoingAnimation = true;
       _setupAnimation();
       _controller.reset();

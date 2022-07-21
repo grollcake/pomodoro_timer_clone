@@ -18,7 +18,7 @@ class TimerSection extends StatelessWidget {
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AnimatedSwitching(key: ValueKey<String>(min), child: Text(min, style: timeText1Style)),
+              AnimatedSwitching(child: Text(min, style: timeText1Style, key: ValueKey<String>(min))),
               Text(sec, style: timeText2Style),
             ],
           )
