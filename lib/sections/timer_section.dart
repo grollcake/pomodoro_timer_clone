@@ -14,14 +14,20 @@ class TimerSection extends StatelessWidget {
     final String sec =
         (timerController.remainTime.inSeconds - timerController.remainTime.inMinutes * 60).toString().padLeft(2, '0');
 
-    return timerController.status != TimerStatus.finished
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedSwitching(child: Text(min, style: timeText1Style, key: ValueKey<String>(min))),
-              Text(sec, style: timeText2Style),
-            ],
-          )
-        : SizedBox();
+    if (timerController.status != TimerStatus.finished) {
+      return AnimatedOpacity(
+        duration: Duration(milliseconds: 300),
+        opacity: timerController.status == TimerStatus.playing ? 1.0 : 0.7,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedSwitching(child: Text(min, style: timeText1Style, key: ValueKey<String>(min))),
+            Text(sec, style: timeText2Style),
+          ],
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }
