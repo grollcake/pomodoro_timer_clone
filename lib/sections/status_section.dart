@@ -36,8 +36,8 @@ class StatusSection extends StatelessWidget {
                                 margin: EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                   color: index == 0
-                                      ? getColor(timerController.stageQue[idx])
-                                      : getColor(timerController.stageQue[idx]).withAlpha(70),
+                                      ? timerController.stageColor
+                                      : timerController.stageColorByIdx(idx).withAlpha(70),
                                   borderRadius: BorderRadius.circular(10),
                                   border: index == 0
                                       ? Border.all(
@@ -68,11 +68,7 @@ class StatusSection extends StatelessWidget {
           height: 36,
           color: Color(0xFF374151),
           child: Center(
-            child: Text(
-                timerController.status == TimerStatus.finished
-                    ? 'Finished'
-                    : getStageName(timerController.stageQue[timerController.stageIndex]),
-                style: statTextStyle),
+            child: Text(timerController.stageName, style: statTextStyle),
           ),
         )
       ],

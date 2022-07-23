@@ -103,7 +103,7 @@ class ControlSection extends StatelessWidget {
         strokeWidth: 5,
         startDegree: 350,
         endDegree: 20,
-        color: getColor(timerController.stageQue[timerController.stageIndex + 1]),
+        color: timerController.nextStageColor,
         isSpinning: timerController.status == TimerStatus.playing,
         curve: Curves.easeOut,
       ),
@@ -119,7 +119,7 @@ class ControlSection extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: getColor(timerController.stageQue[timerController.stageIndex]),
+              color: timerController.stageColor,
               blurRadius: 10,
               spreadRadius: 3,
             ),

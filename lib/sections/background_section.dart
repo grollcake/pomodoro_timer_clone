@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:pomodoro_timer_clone/utils/utils.dart';
 
 class BackgroundSection extends StatelessWidget {
   const BackgroundSection({Key? key}) : super(key: key);
@@ -12,10 +11,8 @@ class BackgroundSection extends StatelessWidget {
 
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    final Color currentColor = getColor(timerController.stageQue[timerController.stageIndex]);
-    final Color nextColor = (timerController.stageIndex == timerController.stageQue.length - 1)
-        ? Color(0xFF263238)
-        : getColor(timerController.stageQue[timerController.stageIndex + 1]);
+    final Color currentColor = timerController.stageColor;
+    final Color nextColor = timerController.nextStageColor;
 
     Duration duration = Duration(seconds: 1);
     Curve curve = Curves.linear;

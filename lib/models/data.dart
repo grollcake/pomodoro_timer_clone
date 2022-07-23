@@ -1,1 +1,1 @@
-enum TimerStage { work, rest, longRest }
+enum TimerStage { work, rest, longRest, done }

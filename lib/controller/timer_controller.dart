@@ -39,6 +39,15 @@ class TimerController extends ChangeNotifier {
 
   TimerStatus get status => _status;
 
+  String get stageName => _stageName();
+
+  Color get stageColor => _stageColor(_stageQue[_stageIndex]);
+
+  Color get nextStageColor =>
+      _stageIndex < _stageQue.length - 1 ? _stageColor(_stageQue[_stageIndex + 1]) : _stageColor(TimerStage.done);
+
+  Color stageColorByIdx(int idx) => _stageColor(_stageQue[idx]);
+
   ///////////////////////////////////
   // public methods
 
@@ -183,6 +192,34 @@ class TimerController extends ChangeNotifier {
         return Duration(minutes: 5);
       case TimerStage.longRest:
         return Duration(minutes: 15);
+      case TimerStage.done:
+        return Duration.zero;
+    }
+  }
+
+  Color _stageColor(TimerStage stage) {
+    switch (stage) {
+      case TimerStage.work:
+        return Color(0xFFFF6B6B);
+      case TimerStage.rest:
+        return Color(0xFFF4A261);
+      case TimerStage.longRest:
+        return Color(0xFF2EC4B6);
+      case TimerStage.done:
+        return Color(0xFF5FA624);
+    }
+  }
+
+  String _stageName() {
+    switch (_stageQue[_stageIndex]) {
+      case TimerStage.work:
+        return 'Work';
+      case TimerStage.rest:
+        return 'Break';
+      case TimerStage.longRest:
+        return 'Long Break';
+      case TimerStage.done:
+        return 'Finish';
     }
   }
 }
