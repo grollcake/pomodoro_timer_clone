@@ -99,7 +99,7 @@ class _ArcPainter extends CustomPainter {
     double radius = size.width / 2;
 
     final arcPaint = Paint()
-      ..color = color.withOpacity(1.0)
+      ..color = color.withOpacity(.7)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
