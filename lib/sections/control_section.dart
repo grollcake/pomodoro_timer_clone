@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_timer_clone/components/SpinningArc.dart';
 import 'package:pomodoro_timer_clone/components/spinning_wheel.dart';
+import 'package:pomodoro_timer_clone/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:pomodoro_timer_clone/components/play_button.dart';
 import 'package:pomodoro_timer_clone/components/skip_button.dart';
@@ -23,6 +25,7 @@ class ControlSection extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 20),
           child: Stack(
             children: [
+              /// 뒤로 감기 버튼
               if (timerController.status != TimerStatus.finished)
                 Positioned.fill(
                   child: Align(
@@ -34,6 +37,7 @@ class ControlSection extends StatelessWidget {
                     ),
                   ),
                 ),
+              /// 앞으로 건너뛰기 버튼
               if (timerController.status != TimerStatus.finished)
                 Positioned.fill(
                   child: Align(
@@ -48,9 +52,26 @@ class ControlSection extends StatelessWidget {
                     ),
                   ),
                 ),
+              /// 원형 쉐도우 (진행 중일 때만 나타남)
+              if (timerController.status == TimerStatus.playing)
               Positioned.fill(
                 child: Center(
-                  child: SpinningWheel(timer: timerController.timer, isActive: timerController.status == TimerStatus.playing),
+                  child: buildCircleShadow(getColor(timerController.stageQue[timerController.stageIndex])),
+                ),
+              ),
+              // 초 경과 애니메이션 (진행 중일 때만 나타남)
+              if (timerController.status == TimerStatus.playing)
+              Positioned.fill(
+                child: Center(
+                  // child: SpinningWheel(timer: timerController.timer, isActive: timerController.status == TimerStatus.playing),
+                  child: SpinningArc(
+                    radius: 50,
+                    startDegree: 350,
+                    endDegree: 20,
+                    color: getColor(timerController.stageQue[timerController.stageIndex + 1]),
+                    isSpinning: timerController.status == TimerStatus.playing,
+                    curve: Curves.easeOut,
+                  ),
                 ),
               ),
               Positioned.fill(
@@ -70,6 +91,23 @@ class ControlSection extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Container buildCircleShadow(Color color) {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: color,
+            blurRadius: 10,
+            spreadRadius: 3,
+          ),
+        ],
+      ),
     );
   }
 }

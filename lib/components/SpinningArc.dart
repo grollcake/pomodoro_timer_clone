@@ -99,7 +99,7 @@ class _ArcPainter extends CustomPainter {
     double radius = size.width / 2;
 
     final arcPaint = Paint()
-      ..color = Colors.pink.withOpacity(1.0)
+      ..color = color.withOpacity(1.0)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
@@ -125,7 +125,7 @@ class _ArcPainter extends CustomPainter {
 
     // 그림자 그리기
     Paint shadowPaint = Paint()
-      ..color = Colors.pink.withOpacity(1.0)
+      ..color = color.withOpacity(1.0)
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
