@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +20,10 @@ class BackgroundSection extends StatelessWidget {
     if (timerController.status == TimerStatus.ready) {
       duration = Duration.zero;
     } else if (timerController.status == TimerStatus.skippingNext) {
-      duration = Duration(milliseconds: 500);
+      duration = kTransitionDuration;
       curve = Curves.easeOutCubic;
     } else if (timerController.status == TimerStatus.skippingBack) {
-      duration = Duration(milliseconds: 500);
+      duration = kTransitionDuration;
       curve = Curves.easeOutCubic;
     }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pausable_timer/pausable_timer.dart';
+import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/models/data.dart';
 
 enum TimerStatus {
@@ -105,7 +106,7 @@ class TimerController extends ChangeNotifier {
     _status = TimerStatus.skippingNext;
     _calcProgressRatio();
     notifyListeners();
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(kTransitionDuration);
 
     _stageIndex++;
     _status = TimerStatus.ready;
@@ -121,7 +122,7 @@ class TimerController extends ChangeNotifier {
     _status = TimerStatus.skippingBack;
     _calcProgressRatio();
     notifyListeners();
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(kTransitionDuration);
 
     _status = TimerStatus.ready;
     _calcProgressRatio();

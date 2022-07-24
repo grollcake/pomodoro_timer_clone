@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_timer_clone/components/que_indigator.dart';
+import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
 import 'package:pomodoro_timer_clone/styles/style.dart';
 import 'package:provider/provider.dart';
-import 'package:pomodoro_timer_clone/utils/utils.dart';
 
 class StatusSection extends StatelessWidget {
   const StatusSection({Key? key}) : super(key: key);
@@ -23,33 +24,18 @@ class StatusSection extends StatelessWidget {
                 child: timerController.status != TimerStatus.finished
                     ? Padding(
                         padding: EdgeInsets.only(left: 20),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: timerController.stageQue.length - timerController.stageIndex,
-                          itemBuilder: (BuildContext context, int index) {
-                            int idx = timerController.stageIndex + index;
-                            return Center(
-                              child: Container(
-                                width: 46,
-                                height: 46,
-                                margin: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: index == 0
-                                      ? timerController.stageColor
-                                      : timerController.stageColorByIdx(idx).withAlpha(70),
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: index == 0
-                                      ? Border.all(
-                                          color: Colors.white,
-                                          width: 1.0,
-                                        )
-                                      : null,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        child: StageQueSecion(status: timerController.status),
+                        // child: ListView.builder(
+                        //   shrinkWrap: true,
+                        //   scrollDirection: Axis.horizontal,
+                        //   itemCount: timerController.stageQue.length - timerController.stageIndex,
+                        //   itemBuilder: (BuildContext context, int index) {
+                        //     int idx = timerController.stageIndex + index;
+                        //     return Center(
+                        //       child: QueIndigator(stageIndex: idx, isActive: index == 0),
+                        //     );
+                        //   },
+                        // ),
                       )
                     : SizedBox(),
               ),
@@ -72,6 +58,74 @@ class StatusSection extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class StageQueSecion extends StatefulWidget {
+  const StageQueSecion({Key? key, required this.status}) : super(key: key);
+  final TimerStatus status;
+
+  @override
+  State<StageQueSecion> createState() => _StageQueSecionState();
+}
+
+class _StageQueSecionState extends State<StageQueSecion> {
+  final GlobalKey<AnimatedListState> _animatedListKey = GlobalKey();
+  late TimerController timerController;
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.status != widget.status && widget.status == TimerStatus.skippingNext) {
+      _removeFirstQue();
+    }
+  }
+
+  void _removeFirstQue() {
+    _animatedListKey.currentState!.removeItem(
+      0,
+      (context, animation) {
+        return FadeTransition(
+          opacity: AlwaysStoppedAnimation(0.0),
+          child: SizeTransition(
+            sizeFactor: animation,
+            axis: Axis.horizontal,
+            child: Center(
+              child: QueIndigator(stageIndex: timerController.stageIndex, isActive: false),
+            ),
+          ),
+        );
+      },
+      duration: kTransitionDuration,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timerController = context.read<TimerController>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedList(
+      key: _animatedListKey,
+      initialItemCount: timerController.stageQue.length - timerController.stageIndex,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (_, index, animation) {
+        int idx = timerController.stageIndex + index;
+        // SkippingNext 이벤트 중에는 첫번째 아이템은 삭제 애니메이션 처리 중이므로 두번째 아이템부터 화면에 그린다.
+        if (timerController.status == TimerStatus.skippingNext) idx++;
+        if (idx < timerController.stageQue.length) {
+          return Center(
+            key: UniqueKey(),
+            child: QueIndigator(stageIndex: idx, isActive: index == 0),
+          );
+        } else {
+          return SizedBox();
+        }
+      },
     );
   }
 }
