@@ -47,16 +47,7 @@ class BackgroundSection extends StatelessWidget {
             curve: curve,
             width: screenWidth * timerController.displayRatio,
             height: screenHeight,
-            decoration: BoxDecoration(
-              color: nextColor,
-              image: (timerController.stageIndex == timerController.stageQue.length - 1)
-                  ? DecorationImage(
-                      image: AssetImage('assets/images/finish.png'),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    )
-                  : null,
-            ),
+            decoration: BoxDecoration(color: nextColor),
           ),
         ),
       ],

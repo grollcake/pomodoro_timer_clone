@@ -1,4 +1,6 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pomodoro_timer_clone/components/animated_switching.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
@@ -40,7 +42,30 @@ class TimerSection extends StatelessWidget {
         ),
       );
     } else {
-      return SizedBox();
+      return FinishedScreen();
     }
+  }
+}
+
+class FinishedScreen extends StatelessWidget {
+  const FinishedScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeInUp(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/images/enjoy-beach-vacation.json', width: 300),
+          SizedBox(height: 50),
+          Text(
+            'All done\nTake some rest',
+            style: timeText1Style.copyWith(fontSize: 30, color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 100),
+        ],
+      ),
+    );
   }
 }

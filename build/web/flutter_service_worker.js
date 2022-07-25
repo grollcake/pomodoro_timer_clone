@@ -3,11 +3,12 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "afbf7f01906210799f77807b29511a0a",
+  "assets/AssetManifest.json": "9b9ecd2e70840819090d21abf3f2ceac",
+"assets/assets/images/enjoy-beach-vacation.json": "e5fe0fe2cc34f225ae740e487c4b9482",
 "assets/assets/images/finish.png": "d0d036271547fd8f12f541f9fa989df9",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
-"assets/NOTICES": "c1aec50e10a7a73b29cbe6d2c47c0c88",
+"assets/NOTICES": "ffa623d42284e4fdf76732b0c50c061b",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "canvaskit/canvaskit.js": "c2b4e5f3d7a3d82aed024e7249a78487",
 "canvaskit/canvaskit.wasm": "4b83d89d9fecbea8ca46f2f760c5a9ba",
@@ -19,9 +20,9 @@ const RESOURCES = {
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "a209f7b6c0d71fa0def19358eca9c278",
-"/": "a209f7b6c0d71fa0def19358eca9c278",
-"main.dart.js": "58ff8fb2761c3af8fde47e1fbf131ff8",
+"index.html": "bb6f3e40ac823718555ee69f009a21d2",
+"/": "bb6f3e40ac823718555ee69f009a21d2",
+"main.dart.js": "0537ffa92e4cc59f32cb2076c504dc37",
 "manifest.json": "f6983c286c10eabc87110b1a05a4966d",
 "version.json": "507dc7c23fb7f2288a0d2f076b7070b7"
 };

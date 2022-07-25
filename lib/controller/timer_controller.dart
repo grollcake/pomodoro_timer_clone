@@ -209,7 +209,7 @@ class TimerController extends ChangeNotifier {
       case TimerStage.longRest:
         return Color(0xFF2EC4B6);
       case TimerStage.done:
-        return Color(0xFF5FA624);
+        return Color(0xFF096FAF);
     }
   }
 

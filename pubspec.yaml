@@ -13,6 +13,8 @@ dependencies:
   google_fonts: 3.0.1
   pausable_timer:
   provider:
+  animate_do: ^2.1.0
+  lottie: ^1.3.0
 
 dev_dependencies:
   flutter_test:

@@ -12,8 +12,14 @@ class StatusSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final timerController = context.watch<TimerController>();
 
+    // 모든 스테이지가 완료됐다면 아무것도 출력하지 않음
+    if (timerController.status == TimerStatus.finished) {
+      return SizedBox();
+    }
+
     return Column(
       children: [
+        // 스테이지 대기열 표시자 노출
         Container(
           width: MediaQuery.of(context).size.width,
           height: 80,
@@ -25,17 +31,6 @@ class StatusSection extends StatelessWidget {
                     ? Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: StageQueSecion(status: timerController.status),
-                        // child: ListView.builder(
-                        //   shrinkWrap: true,
-                        //   scrollDirection: Axis.horizontal,
-                        //   itemCount: timerController.stageQue.length - timerController.stageIndex,
-                        //   itemBuilder: (BuildContext context, int index) {
-                        //     int idx = timerController.stageIndex + index;
-                        //     return Center(
-                        //       child: QueIndigator(stageIndex: idx, isActive: index == 0),
-                        //     );
-                        //   },
-                        // ),
                       )
                     : SizedBox(),
               ),
@@ -50,6 +45,7 @@ class StatusSection extends StatelessWidget {
             ],
           ),
         ),
+        // 현재 스테이지에 대한 텍스트 노출
         Container(
           height: 36,
           color: Color(0xFF374151),
