@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_timer_clone/constants/constants.dart';
 
 class AnimatedSwitching extends StatefulWidget {
   const AnimatedSwitching({Key? key, required this.child}) : super(key: key);
@@ -14,7 +15,7 @@ class _AnimatedSwitchingState extends State<AnimatedSwitching> with SingleTicker
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  final Duration duration = Duration(milliseconds: 200);
+  final Duration duration = kTransitionDuration;
 
   void _setupAnimation() {
     if (_isOutgoingAnimation) {

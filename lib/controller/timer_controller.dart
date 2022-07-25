@@ -49,6 +49,8 @@ class TimerController extends ChangeNotifier {
 
   Color stageColorByIdx(int idx) => _stageColor(_stageQue[idx]);
 
+  Duration stageDurationById(int idx) => _getStageDuration(_stageQue[idx]);
+
   ///////////////////////////////////
   // public methods
 
