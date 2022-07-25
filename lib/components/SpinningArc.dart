@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 
 class SpinningArc extends StatefulWidget {
   const SpinningArc({
@@ -12,6 +13,7 @@ class SpinningArc extends StatefulWidget {
     this.isSpinning = true,
     this.duration = const Duration(seconds: 1),
     this.curve = Curves.linear,
+    this.reset = false,
   }) : super(key: key);
   final double radius;
   final double? strokeWidth;
@@ -21,6 +23,7 @@ class SpinningArc extends StatefulWidget {
   final bool isSpinning;
   final Duration duration;
   final Curve curve;
+  final bool reset;
 
   @override
   State<SpinningArc> createState() => _SpinningArcState();
@@ -49,6 +52,7 @@ class _SpinningArcState extends State<SpinningArc> with SingleTickerProviderStat
   @override
   void didUpdateWidget(oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.reset) _controller.reset();
     if (oldWidget.isSpinning != widget.isSpinning) {
       if (widget.isSpinning) {
         _controller.forward();

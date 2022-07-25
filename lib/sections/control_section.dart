@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/components/SpinningArc.dart';
-import 'package:pomodoro_timer_clone/utils/utils.dart';
-import 'package:provider/provider.dart';
 import 'package:pomodoro_timer_clone/components/play_button.dart';
 import 'package:pomodoro_timer_clone/components/skip_button.dart';
+import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
+import 'package:provider/provider.dart';
 
 class ControlSection extends StatelessWidget {
   ControlSection({
@@ -96,7 +96,7 @@ class ControlSection extends StatelessWidget {
 
   Widget buildSpinningArc() {
     return AnimatedOpacity(
-      duration: Duration(milliseconds: 250),
+      duration: kTransitionDuration,
       opacity: timerController.status == TimerStatus.playing ? 1 : 0,
       child: SpinningArc(
         radius: 50,
@@ -106,13 +106,15 @@ class ControlSection extends StatelessWidget {
         color: timerController.nextStageColor,
         isSpinning: timerController.status == TimerStatus.playing,
         curve: Curves.easeOut,
+        reset: [TimerStatus.skippingNext, TimerStatus.skippingBack, TimerStatus.finished, TimerStatus.ready]
+            .contains(timerController.status),
       ),
     );
   }
 
   Widget buildCircleShadow() {
     return AnimatedOpacity(
-      duration: Duration(milliseconds: 250),
+      duration: kTransitionDuration,
       opacity: timerController.status == TimerStatus.playing ? 1 : 0,
       child: Container(
         decoration: BoxDecoration(
