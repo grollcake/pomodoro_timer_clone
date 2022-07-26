@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pausable_timer/pausable_timer.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
-import 'package:pomodoro_timer_clone/models/data.dart';
+import 'package:pomodoro_timer_clone/models/enums.dart';
 
 enum TimerStatus {
   ready,
