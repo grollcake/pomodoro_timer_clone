@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SubButton extends StatelessWidget {
   const SubButton({
@@ -8,7 +9,7 @@ class SubButton extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  final IconData icon;
+  final String icon;
   final String position;
   final VoidCallback? onPressed;
 
@@ -25,11 +26,13 @@ class SubButton extends StatelessWidget {
               ? BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16))
               : BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16)),
         ),
-        child: Padding(
+        child: Container(
           padding: position == 'L' ? EdgeInsets.only(right: 16) : EdgeInsets.only(left: 16),
-          child: Icon(
+          alignment: Alignment.center,
+          child: SvgPicture.asset(
             icon,
-            size: 30,
+            width: 24,
+            height: 24,
             color: onPressed == null ? Colors.grey : Color(0xFF111827),
           ),
         ),

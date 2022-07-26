@@ -49,7 +49,7 @@ class _LowerControlButtonSectionState extends State<LowerControlButtonSection> {
       child: Align(
         alignment: Alignment.centerRight,
         child: SubButton(
-          icon: Icons.skip_next_outlined,
+          icon: 'assets/icons/icon-tabler-player-skip-forward.svg',
           position: 'R',
           onPressed: (timerController.status == TimerStatus.playing ||
                   timerController.stageIndex == timerController.stageQue.length - 1)
@@ -65,7 +65,7 @@ class _LowerControlButtonSectionState extends State<LowerControlButtonSection> {
       child: Align(
         alignment: Alignment.centerLeft,
         child: SubButton(
-          icon: Icons.skip_previous_outlined,
+          icon: 'assets/icons/icon-tabler-player-skip-back.svg',
           position: 'L',
           onPressed: () => timerController.skipBack(),
         ),
@@ -85,10 +85,10 @@ class _LowerControlButtonSectionState extends State<LowerControlButtonSection> {
             buildSpinningArc(), // 시간 흐름을 표현하는 애니메이션 (진행 중일 때만 나타남)
             PlayButton(
               icon: timerController.status == TimerStatus.finished
-                  ? Icons.replay_rounded
+                  ? 'assets/icons/reload-svgrepo-com.svg'
                   : timerController.status == TimerStatus.playing
-                      ? Icons.pause
-                      : Icons.play_arrow_rounded,
+                      ? 'assets/icons/icon-tabler-player-pause.svg'
+                      : 'assets/icons/icon-tabler-player-play.svg',
               onPressed: () => timerController.circleButton(),
             ),
           ],

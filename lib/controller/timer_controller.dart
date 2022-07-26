@@ -190,11 +190,11 @@ class TimerController extends ChangeNotifier {
   Duration _getStageDuration(TimerStage stage) {
     switch (stage) {
       case TimerStage.work:
-        return Duration(minutes: 25);
+        return Duration(seconds: 25);
       case TimerStage.rest:
-        return Duration(minutes: 5);
+        return Duration(seconds: 5);
       case TimerStage.longRest:
-        return Duration(minutes: 15);
+        return Duration(seconds: 15);
       case TimerStage.done:
         return Duration.zero;
     }

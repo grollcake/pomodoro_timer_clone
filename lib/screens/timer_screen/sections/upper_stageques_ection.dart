@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/constants/style.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
+import 'package:pomodoro_timer_clone/screens/settings_screen/settings_screen.dart';
 import 'package:pomodoro_timer_clone/screens/timer_screen/components/que_indigator.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,7 @@ class UpperStageQueSection extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.settings),
                   color: Colors.grey,
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context).push(_createRoute(SettingsScreen())),
                 ),
               ),
             ],
@@ -54,6 +55,22 @@ class UpperStageQueSection extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+
+  Route _createRoute(Widget targetPage) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => targetPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

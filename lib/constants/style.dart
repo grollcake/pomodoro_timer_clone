@@ -6,3 +6,4 @@ final timeText1Style =
 final timeText2Style =
     GoogleFonts.poppins(fontSize: 144, fontWeight: FontWeight.w300, height: 0.9, color: Colors.black);
 final statTextStyle = GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white);
+final settingTitleTextStyle = GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.black);

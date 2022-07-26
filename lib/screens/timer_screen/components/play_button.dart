@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PlayButton extends StatelessWidget {
   const PlayButton({
@@ -7,12 +8,12 @@ class PlayButton extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  final IconData icon;
+  final String icon;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 100,
       height: 100,
       child: ElevatedButton(
@@ -23,9 +24,10 @@ class PlayButton extends StatelessWidget {
           padding: EdgeInsets.zero,
           primary: Color(0xFFE5E7EB),
         ),
-        child: Icon(
+        child: SvgPicture.asset(
           icon,
-          size: 80,
+          width: 60,
+          height: 60,
           color: Color(0xFF111827),
         ),
       ),
