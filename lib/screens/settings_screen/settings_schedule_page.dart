@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_timer_clone/constants/style.dart';
+import 'package:pomodoro_timer_clone/screens/settings_screen/components/inputbox_item.dart';
 
 class SettingsSchedulePage extends StatefulWidget {
   const SettingsSchedulePage({Key? key}) : super(key: key);
@@ -11,14 +11,11 @@ class SettingsSchedulePage extends StatefulWidget {
 class _SettingsSchedulePageState extends State<SettingsSchedulePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (_, index) => Container(
-          padding: EdgeInsets.all(20),
-          child: Text('[$index] Schedule Setting', style: menuTextStyle),
-        ),
-      ),
+    return Column(
+      children: [
+        InputBoxItem(),
+        Divider(),
+      ],
     );
   }
 }

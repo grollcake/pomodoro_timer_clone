@@ -27,21 +27,34 @@ class CheckBoxItem extends StatelessWidget {
               ],
             ),
           ),
-          Transform.scale(
-            scale: 1.3,
-            child: Checkbox(
-              visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-                side: BorderSide(
-                  color: Colors.grey,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: settingsBg1,
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              checkColor: Colors.white,
-              activeColor: primaryColor,
-              value: checked,
-              onChanged: (value) => onChanged(value),
-            ),
+              Transform.scale(
+                scale: 1.3,
+                child: Checkbox(
+                  visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    side: BorderSide(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  checkColor: Colors.white,
+                  activeColor: primaryColor,
+                  value: checked,
+                  onChanged: (value) => onChanged(value),
+                ),
+              ),
+            ],
           ),
         ],
       ),

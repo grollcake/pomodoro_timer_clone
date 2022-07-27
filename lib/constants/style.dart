@@ -12,3 +12,34 @@ final descTextStyle =
     GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black.withOpacity(.75));
 final menuInactiveColor = Color(0xFFE5E7EB);
 final primaryColor = Color(0xFFFF6B6B);
+final settingsBg1 = Color(0xFFF9FAFB);
+
+final themeData = ThemeData(
+  inputDecorationTheme: InputDecorationTheme(
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+    fillColor: settingsBg1,
+    filled: true,
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 0.5,
+        color: Colors.grey,
+      ),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 0.5,
+        color: Colors.grey,
+      ),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 0.5,
+        color: Colors.grey,
+      ),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+  ),
+);
