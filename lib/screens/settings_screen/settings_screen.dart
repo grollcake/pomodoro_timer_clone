@@ -34,7 +34,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(),
-      body: pages[_menuIndex],
+      body: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 10.0),
+        child: IndexedStack(index: _menuIndex, children: pages),
+      ),
       bottomNavigationBar: BottomNavSection(initialIndex: 0, callBack: (index) => _changeMenu(index)),
     );
   }

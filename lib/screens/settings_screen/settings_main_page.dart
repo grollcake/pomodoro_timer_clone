@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_timer_clone/constants/style.dart';
+import 'package:pomodoro_timer_clone/screens/settings_screen/components/checkbox_item.dart';
 
 class SettingsMainPage extends StatefulWidget {
   const SettingsMainPage({Key? key}) : super(key: key);
@@ -11,14 +11,22 @@ class SettingsMainPage extends StatefulWidget {
 class _SettingsMainPageState extends State<SettingsMainPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (_, index) => Container(
-          padding: EdgeInsets.all(20),
-          child: Text('[$index] Main Setting', style: menuTextStyle),
+    return Column(
+      children: [
+        CheckBoxItem(
+          title: 'Reset settings',
+          desc: 'All settings will be reset after the app is reloaded',
+          checked: true,
+          onChanged: (value) {},
         ),
-      ),
+        CheckBoxItem(
+          title: 'Reset settings',
+          desc: 'All settings will be reset after the app is reloaded',
+          checked: false,
+          onChanged: (value) {},
+        ),
+        Divider(),
+      ],
     );
   }
 }
