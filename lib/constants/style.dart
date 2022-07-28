@@ -10,6 +10,8 @@ final statTextStyle = GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w
 final menuTextStyle = GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black);
 final descTextStyle =
     GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black.withOpacity(.75));
+final settingsText1 = GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w700, color: Colors.black);
+
 final menuInactiveColor = Color(0xFFE5E7EB);
 final primaryColor = Color(0xFFFF6B6B);
 final settingsBg1 = Color(0xFFF9FAFB);
@@ -17,7 +19,7 @@ final settingsBg1 = Color(0xFFF9FAFB);
 final themeData = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     isDense: true,
-    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
     fillColor: settingsBg1,
     filled: true,
     border: OutlineInputBorder(
