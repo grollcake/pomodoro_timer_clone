@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_timer_clone/constants/style.dart';
+import 'package:pomodoro_timer_clone/screens/settings_screen/components/select_card_item.dart';
 
 class SettingsDisplayPage extends StatefulWidget {
   const SettingsDisplayPage({Key? key}) : super(key: key);
@@ -11,13 +11,20 @@ class SettingsDisplayPage extends StatefulWidget {
 class _SettingsDisplayPageState extends State<SettingsDisplayPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (_, index) => Container(
-          padding: EdgeInsets.all(20),
-          child: Text('[$index] Display Setting', style: menuTextStyle),
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SelectCardItem(
+            title: 'Timer style',
+            onChanged: (int index) {},
+            cards: [
+              ['TRADITIONAL', '12:34'],
+              ['APPROXIMATE', '13 minutes'],
+              ['PERCENTAGE', '50'],
+            ],
+          ),
+        ],
       ),
     );
   }
