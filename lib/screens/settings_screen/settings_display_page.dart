@@ -21,7 +21,7 @@ class _SettingsDisplayPageState extends State<SettingsDisplayPage> {
             cards: [
               ['TRADITIONAL', '12:34'],
               ['APPROXIMATE', '13 minutes'],
-              ['PERCENTAGE', '50'],
+              ['PERCENTAGE', '50%'],
             ],
           ),
         ],
