@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/constants/style.dart';
 import 'package:pomodoro_timer_clone/controller/timer_controller.dart';
+import 'package:pomodoro_timer_clone/models/enums.dart';
 import 'package:pomodoro_timer_clone/screens/timer_screen/components/animated_switching.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +27,19 @@ class CenterTimeSection extends StatelessWidget {
       displayDurtaion = timerController.remainTime;
       print(timerController.remainTime);
     }
-    final String min = displayDurtaion.inMinutes.toString().padLeft(2, '0');
-    final String sec = (displayDurtaion.inSeconds - displayDurtaion.inMinutes * 60).toString().padLeft(2, '0');
+
+    String part1 = '';
+    String part2 = '';
+    if (timerController.displayStyle == DisplayStyle.traditional) {
+      part1 = displayDurtaion.inMinutes.toString().padLeft(2, '0');
+      part2 = (displayDurtaion.inSeconds - displayDurtaion.inMinutes * 60).toString().padLeft(2, '0');
+    } else if (timerController.displayStyle == DisplayStyle.approximate) {
+      part1 = displayDurtaion.inMinutes.toString().padLeft(2, '0');
+      part2 = 'minutes';
+    } else if (timerController.displayStyle == DisplayStyle.percentage) {
+      part1 = '11';
+      part2 = '%';
+    }
 
     if (timerController.status != TimerStatus.finished) {
       return AnimatedOpacity(
@@ -36,8 +48,8 @@ class CenterTimeSection extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AnimatedSwitching(child: Text(min, style: timeText1Style, key: ValueKey<String>(min))),
-            Text(sec, style: timeText2Style),
+            AnimatedSwitching(child: Text(part1, style: timeText1Style, key: ValueKey<String>(part1))),
+            Text(part2, style: timeText2Style),
           ],
         ),
       );

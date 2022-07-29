@@ -20,6 +20,8 @@ class TimerController extends ChangeNotifier {
   double _progressRatio = 0.0;
   TimerStatus _status = TimerStatus.ready;
 
+  DisplayStyle _displayStyle = DisplayStyle.approximate;
+
   TimerController() {
     _init();
     _timer = PausableTimer(Duration(seconds: 1), _timeGoesBy);
@@ -50,6 +52,8 @@ class TimerController extends ChangeNotifier {
   Color stageColorByIdx(int idx) => _stageColor(_stageQue[idx]);
 
   Duration stageDurationById(int idx) => _getStageDuration(_stageQue[idx]);
+
+  DisplayStyle get displayStyle => _displayStyle;
 
   ///////////////////////////////////
   // public methods
@@ -129,6 +133,13 @@ class TimerController extends ChangeNotifier {
     _status = TimerStatus.ready;
     _calcProgressRatio();
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
+    notifyListeners();
+  }
+
+  ///////////////////////////////////
+  // 설정 관련
+  void setDisplayStyle(DisplayStyle displayStyle) {
+    _displayStyle = displayStyle;
     notifyListeners();
   }
 
