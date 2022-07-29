@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_timer_clone/controller/setting_controller.dart';
 import 'package:pomodoro_timer_clone/models/data.dart';
 import 'package:pomodoro_timer_clone/screens/settings_screen/components/inputbox_item.dart';
 import 'package:pomodoro_timer_clone/screens/settings_screen/components/select_card_item.dart';
+import 'package:provider/provider.dart';
 
 class SettingsSchedulePage extends StatefulWidget {
   const SettingsSchedulePage({Key? key}) : super(key: key);
@@ -30,6 +32,7 @@ class _SettingsSchedulePageState extends State<SettingsSchedulePage> {
     _workDuration = kSchedulePresets[key]![0];
     _breakDuration = kSchedulePresets[key]![1];
     _longBreakDuration = kSchedulePresets[key]![2];
+    context.read<SettingController>().setSchedulePreset(index);
   }
 
   String _formatDuration(Duration duration) {

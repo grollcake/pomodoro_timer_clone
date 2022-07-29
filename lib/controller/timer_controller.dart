@@ -19,7 +19,9 @@ class TimerController extends ChangeNotifier {
   late Duration _remainTime;
   double _progressRatio = 0.0;
   TimerStatus _status = TimerStatus.ready;
-
+  Duration _workDuration = Duration.zero;
+  Duration _breakDuration = Duration.zero;
+  Duration _longBreakDuration = Duration.zero;
   DisplayStyle _displayStyle = DisplayStyle.approximate;
 
   TimerController() {
@@ -143,6 +145,23 @@ class TimerController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setStageDuration(TimerStage stage, Duration duration) {
+    switch (stage) {
+      case TimerStage.work:
+        _workDuration = duration;
+        break;
+      case TimerStage.rest:
+        _breakDuration = duration;
+        break;
+      case TimerStage.longRest:
+        _longBreakDuration = duration;
+        break;
+      case TimerStage.done:
+        break;
+    }
+    notifyListeners();
+  }
+
   ///////////////////////////////////
   // private methods
   void _init() {
@@ -201,11 +220,11 @@ class TimerController extends ChangeNotifier {
   Duration _getStageDuration(TimerStage stage) {
     switch (stage) {
       case TimerStage.work:
-        return Duration(seconds: 25);
+        return _workDuration;
       case TimerStage.rest:
-        return Duration(seconds: 5);
+        return _breakDuration;
       case TimerStage.longRest:
-        return Duration(seconds: 15);
+        return _longBreakDuration;
       case TimerStage.done:
         return Duration.zero;
     }
