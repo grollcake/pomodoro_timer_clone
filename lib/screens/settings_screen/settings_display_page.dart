@@ -22,7 +22,7 @@ class _SettingsDisplayPageState extends State<SettingsDisplayPage> {
         children: [
           SelectCardItem(
             title: 'Timer style',
-            intialIndex: settingController.displayStyle.index,
+            selectedIndex: settingController.displayStyle.index,
             onChanged: (int index) {
               if (index == 0) {
                 settingController.setDisplayStyle(DisplayStyle.traditional);

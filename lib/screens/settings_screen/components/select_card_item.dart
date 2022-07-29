@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/constants/style.dart';
 
 class SelectCardItem extends StatefulWidget {
-  const SelectCardItem({Key? key, this.intialIndex, required this.onChanged, required this.cards, required this.title})
+  const SelectCardItem(
+      {Key? key, this.selectedIndex, required this.onChanged, required this.cards, required this.title})
       : super(key: key);
   final String title;
-  final int? intialIndex;
+  final int? selectedIndex;
   final Function(int) onChanged;
   final List<List<String>> cards;
 
@@ -24,7 +25,7 @@ class _SelectCardItemState extends State<SelectCardItem> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.intialIndex;
+    _selectedIndex = widget.selectedIndex;
   }
 
   @override

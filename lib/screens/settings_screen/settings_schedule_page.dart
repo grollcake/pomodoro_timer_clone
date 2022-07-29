@@ -55,7 +55,7 @@ class _SettingsSchedulePageState extends State<SettingsSchedulePage> {
           SelectCardItem(
             title: 'Schedule preset',
             onChanged: (int index) => setState(() => _changeSchedule(index)),
-            intialIndex: _selectedScheduleIndex,
+            selectedIndex: _selectedScheduleIndex,
             cards: [
               ['DEFAULT', 'The default Pomodoro values.'],
               ['BEGINNER', 'For those who haven\'t yet tried the Pomodoro technique.'],
