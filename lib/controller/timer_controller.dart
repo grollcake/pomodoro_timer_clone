@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pausable_timer/pausable_timer.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
+import 'package:pomodoro_timer_clone/models/data.dart';
 import 'package:pomodoro_timer_clone/models/enums.dart';
 
 enum TimerStatus {
@@ -19,10 +20,9 @@ class TimerController extends ChangeNotifier {
   late Duration _remainTime;
   double _progressRatio = 0.0;
   TimerStatus _status = TimerStatus.ready;
-  Duration _workDuration = Duration.zero;
-  Duration _breakDuration = Duration.zero;
-  Duration _longBreakDuration = Duration.zero;
-  DisplayStyle _displayStyle = DisplayStyle.approximate;
+  Duration _workDuration = kSchedulePresets[0][0];
+  Duration _breakDuration = kSchedulePresets[0][1];
+  Duration _longBreakDuration = kSchedulePresets[0][2];
 
   TimerController() {
     _init();
@@ -54,8 +54,6 @@ class TimerController extends ChangeNotifier {
   Color stageColorByIdx(int idx) => _stageColor(_stageQue[idx]);
 
   Duration stageDurationById(int idx) => _getStageDuration(_stageQue[idx]);
-
-  DisplayStyle get displayStyle => _displayStyle;
 
   ///////////////////////////////////
   // public methods
@@ -140,10 +138,6 @@ class TimerController extends ChangeNotifier {
 
   ///////////////////////////////////
   // 설정 관련
-  void setDisplayStyle(DisplayStyle displayStyle) {
-    _displayStyle = displayStyle;
-    notifyListeners();
-  }
 
   void setStageDuration(TimerStage stage, Duration duration) {
     switch (stage) {
@@ -159,6 +153,7 @@ class TimerController extends ChangeNotifier {
       case TimerStage.done:
         break;
     }
+    _remainTime = _getStageDuration(_stageQue[_stageIndex]);
     notifyListeners();
   }
 

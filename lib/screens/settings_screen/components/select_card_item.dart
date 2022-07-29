@@ -29,6 +29,12 @@ class _SelectCardItemState extends State<SelectCardItem> {
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _selectedIndex = widget.selectedIndex;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

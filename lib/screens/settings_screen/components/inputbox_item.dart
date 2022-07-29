@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/constants/style.dart';
 
 class InputBoxItem extends StatefulWidget {
-  const InputBoxItem({Key? key, required this.title, this.desc, required this.defalutValue}) : super(key: key);
+  const InputBoxItem(
+      {Key? key,
+      required this.title,
+      this.desc,
+      required this.defalutValue,
+      required this.onSubmitted,
+      this.regex = ''})
+      : super(key: key);
   final String title;
   final String? desc;
   final String? defalutValue;
+  final String regex;
+  final Function(String) onSubmitted;
 
   @override
   State<InputBoxItem> createState() => _InputBoxItemState();
@@ -16,10 +25,20 @@ class _InputBoxItemState extends State<InputBoxItem> {
   bool _formatError = false;
 
   void _validateUserInput() {
-    if (RegExp(r'^[0-9]{1,2}:[0-9]{1,2}$').hasMatch(_controller.text)) {
-      setState(() => _formatError = false);
+    if (widget.regex.isNotEmpty) {
+      if (RegExp(widget.regex).hasMatch(_controller.text)) {
+        setState(() => _formatError = false);
+      } else {
+        setState(() => _formatError = true);
+      }
+    }
+  }
+
+  void _submit(String userInput) {
+    if (_formatError) {
+      widget.onSubmitted(widget.defalutValue ?? '');
     } else {
-      setState(() => _formatError = true);
+      widget.onSubmitted(userInput);
     }
   }
 
@@ -69,6 +88,7 @@ class _InputBoxItemState extends State<InputBoxItem> {
                   keyboardType: TextInputType.number,
                   style: menuTextStyle,
                   onChanged: (value) => _validateUserInput(),
+                  onSubmitted: (value) => _submit(value),
                 ),
               ),
             ],
