@@ -6,6 +6,8 @@ import 'package:pomodoro_timer_clone/screens/settings_screen/settings_display_pa
 import 'package:pomodoro_timer_clone/screens/settings_screen/settings_main_page.dart';
 import 'package:pomodoro_timer_clone/screens/settings_screen/settings_schedule_page.dart';
 
+int _menuIndex = 0;
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  int _menuIndex = 0;
   late List<Widget> pages;
 
   @override
@@ -31,14 +32,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: buildAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 10.0),
-        child: IndexedStack(index: _menuIndex, children: pages),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(), // TextField 외부 터치 시 키보드 닫기
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: buildAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 10.0),
+          child: IndexedStack(index: _menuIndex, children: pages),
+        ),
+        bottomNavigationBar: BottomNavSection(initialIndex: _menuIndex, callBack: (index) => _changeMenu(index)),
       ),
-      bottomNavigationBar: BottomNavSection(initialIndex: 0, callBack: (index) => _changeMenu(index)),
     );
   }
 

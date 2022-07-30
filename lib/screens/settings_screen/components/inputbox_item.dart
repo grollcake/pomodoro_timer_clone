@@ -25,6 +25,7 @@ class InputBoxItem extends StatefulWidget {
 class _InputBoxItemState extends State<InputBoxItem> {
   final TextEditingController _controller = TextEditingController();
   bool _formatError = false;
+  FocusNode _focusNode = FocusNode();
 
   void _validateUserInput() {
     if (widget.regex.isNotEmpty) {
@@ -36,11 +37,11 @@ class _InputBoxItemState extends State<InputBoxItem> {
     }
   }
 
-  void _submit(String userInput) {
+  void _submit() {
     if (_formatError) {
       widget.onSubmitted(widget.defalutValue ?? '');
     } else {
-      widget.onSubmitted(userInput);
+      widget.onSubmitted(_controller.text);
     }
   }
 
@@ -48,6 +49,12 @@ class _InputBoxItemState extends State<InputBoxItem> {
   void initState() {
     super.initState();
     _controller.text = widget.defalutValue ?? '';
+    _focusNode.addListener(() {
+      // 포커스가 나갔을 때는 자동 submit 처리
+      if (!_focusNode.hasFocus) {
+        _submit();
+      }
+    });
   }
 
   @override
@@ -86,11 +93,12 @@ class _InputBoxItemState extends State<InputBoxItem> {
                 flex: 2,
                 child: TextField(
                   controller: _controller,
+                  focusNode: _focusNode,
                   textAlign: TextAlign.right,
                   keyboardType: TextInputType.number,
                   style: menuTextStyle,
                   onChanged: (value) => _validateUserInput(),
-                  onSubmitted: (value) => _submit(value),
+                  onSubmitted: (value) => _submit(),
                 ),
               ),
             ],
