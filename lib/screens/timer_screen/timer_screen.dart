@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/screens/timer_screen/sections/background_section.dart';
 import 'package:pomodoro_timer_clone/screens/timer_screen/sections/center_time_section.dart';
 import 'package:pomodoro_timer_clone/screens/timer_screen/sections/lower_control_button_section.dart';
-import 'package:pomodoro_timer_clone/screens/timer_screen/sections/upper_stageques_ection.dart';
+import 'package:pomodoro_timer_clone/screens/timer_screen/sections/upper_stageques_section.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pausable_timer/pausable_timer.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
+import 'package:pomodoro_timer_clone/main.dart';
 import 'package:pomodoro_timer_clone/models/data.dart';
 import 'package:pomodoro_timer_clone/models/enums.dart';
 
@@ -25,7 +26,7 @@ class TimerController extends ChangeNotifier {
   Duration _longBreakDuration = kSchedulePresets[0][2];
 
   TimerController() {
-    _init();
+    _initialize();
     _timer = PausableTimer(Duration(seconds: 1), _timeGoesBy);
     notifyListeners();
   }
@@ -84,7 +85,7 @@ class TimerController extends ChangeNotifier {
 
   // 모든 스테이지 종료 후 재시작
   void reset() {
-    _init();
+    _initialize();
     _calcProgressRatio();
     notifyListeners();
   }
@@ -138,6 +139,10 @@ class TimerController extends ChangeNotifier {
 
   ///////////////////////////////////
   // 설정 관련
+  void setStageQue(int totalCountOfSets, int longBreakInterval) {
+    _setStageQue(totalCountOfSets, longBreakInterval);
+    notifyListeners();
+  }
 
   void setStageDuration(TimerStage stage, Duration duration) {
     switch (stage) {
@@ -159,17 +164,22 @@ class TimerController extends ChangeNotifier {
 
   ///////////////////////////////////
   // private methods
-  void _init() {
+  void _initialize() {
     _stageIndex = 0;
-    _stageQue = [
-      TimerStage.work,
-      TimerStage.rest,
-      TimerStage.work,
-      TimerStage.longRest,
-      TimerStage.work,
-    ];
-    _remainTime = _getStageDuration(_stageQue[_stageIndex]);
+
+    int totalCountOfSets = persistentSettingController.totalCountOfSets;
+    int longBreakInterval = persistentSettingController.longBreakInterval;
+    _setStageQue(totalCountOfSets, longBreakInterval);
     _status = TimerStatus.ready;
+  }
+
+  void _setStageQue(int totalCountOfSets, int longBreakInterval) {
+    _stageQue = [];
+    for (int i = 0; i < totalCountOfSets; i++) {
+      _stageQue.add(TimerStage.work);
+      _stageQue.add((i + 1) % longBreakInterval == 0 ? TimerStage.longRest : TimerStage.rest);
+    }
+    _remainTime = _getStageDuration(_stageQue[_stageIndex]);
   }
 
   void _timeGoesBy() {

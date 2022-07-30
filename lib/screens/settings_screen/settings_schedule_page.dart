@@ -40,9 +40,20 @@ class _SettingsSchedulePageState extends State<SettingsSchedulePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InputBoxItem(
+            title: 'Total count of sets',
+            desc: 'Number of iterations',
+            regex: r'^\d{1,2}$',
+            formatErrorMessage: 'Incorrectly formatted number (1 to 99)',
+            defalutValue: settingController.totalCountOfSets.toString(),
+            onSubmitted: (value) => settingController.setTotalCountOfSets(int.parse(value)),
+          ),
+          _buildDivider(),
+          InputBoxItem(
             title: 'Long Break interval',
-            defalutValue: '3',
-            onSubmitted: (value) {},
+            regex: r'^\d{1,2}$',
+            formatErrorMessage: 'Incorrectly formatted number (0 to 99)',
+            defalutValue: settingController.longBreakInterval.toString(),
+            onSubmitted: (value) => settingController.setLongBreakInterval(int.parse(value)),
           ),
           _buildDivider(),
           SelectCardItem(
@@ -59,16 +70,21 @@ class _SettingsSchedulePageState extends State<SettingsSchedulePage> {
           InputBoxItem(
             title: 'Work',
             regex: r'^[0-9]{1,2}:[0-9]{1,2}$',
+            formatErrorMessage: 'Incorrectly formatted time (MM:SS)',
             defalutValue: _formatDuration(settingController.workDuration),
             onSubmitted: (timeString) => _timeChange(TimerStage.work, timeString),
           ),
           InputBoxItem(
             title: 'Break',
+            regex: r'^[0-9]{1,2}:[0-9]{1,2}$',
+            formatErrorMessage: 'Incorrectly formatted time (MM:SS)',
             defalutValue: _formatDuration(settingController.restDuration),
             onSubmitted: (timeString) => _timeChange(TimerStage.rest, timeString),
           ),
           InputBoxItem(
             title: 'Long break',
+            regex: r'^[0-9]{1,2}:[0-9]{1,2}$',
+            formatErrorMessage: 'Incorrectly formatted time (MM:SS)',
             defalutValue: _formatDuration(settingController.longRestDuration),
             onSubmitted: (timeString) => _timeChange(TimerStage.longRest, timeString),
           ),

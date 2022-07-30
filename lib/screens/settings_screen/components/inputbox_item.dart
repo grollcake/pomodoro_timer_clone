@@ -8,12 +8,14 @@ class InputBoxItem extends StatefulWidget {
       this.desc,
       required this.defalutValue,
       required this.onSubmitted,
-      this.regex = ''})
+      this.regex = '',
+      required this.formatErrorMessage})
       : super(key: key);
   final String title;
   final String? desc;
   final String? defalutValue;
   final String regex;
+  final String formatErrorMessage;
   final Function(String) onSubmitted;
 
   @override
@@ -106,7 +108,7 @@ class _InputBoxItemState extends State<InputBoxItem> {
                 children: [
                   Icon(Icons.warning_amber_rounded),
                   SizedBox(width: 8),
-                  Text('Incorrectly formatted time (MM:SS)', style: descTextStyle),
+                  Text(widget.formatErrorMessage, style: descTextStyle),
                 ],
               ),
             ),

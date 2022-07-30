@@ -21,11 +21,12 @@ class QueIndigator extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: isActive
             ? Border.all(
-          color: Colors.white,
-          width: 1.0,
-        )
+                color: Colors.white,
+                width: 1.0,
+              )
             : null,
       ),
+      child: Center(child: Text(stageIndex.toString())), // todo Remove this
     );
   }
 }
