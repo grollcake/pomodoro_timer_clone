@@ -26,7 +26,6 @@ class QueIndigator extends StatelessWidget {
               )
             : null,
       ),
-      child: Center(child: Text(stageIndex.toString())), // todo Remove this
     );
   }
 }

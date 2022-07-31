@@ -179,6 +179,8 @@ class TimerController extends ChangeNotifier {
       _stageQue.add(TimerStage.work);
       _stageQue.add((i + 1) % longBreakInterval == 0 ? TimerStage.longRest : TimerStage.rest);
     }
+    // 마지막 Que의 휴식(rest, longRest)은 무조건 제외한다.
+    _stageQue.removeLast();
     _remainTime = _getStageDuration(_stageQue[_stageIndex]);
   }
 

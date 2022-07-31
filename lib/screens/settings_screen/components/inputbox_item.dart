@@ -25,7 +25,7 @@ class InputBoxItem extends StatefulWidget {
 class _InputBoxItemState extends State<InputBoxItem> {
   final TextEditingController _controller = TextEditingController();
   bool _formatError = false;
-  FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
 
   void _validateUserInput() {
     if (widget.regex.isNotEmpty) {

@@ -31,7 +31,11 @@ class UpperStageQueSection extends StatelessWidget {
                 child: timerController.status != TimerStatus.finished
                     ? Padding(
                         padding: EdgeInsets.only(left: 20),
-                        child: StageQueSecion(status: timerController.status),
+                        child: StageQueSecion(
+                          status: timerController.status,
+                          // Schedule이 변경으로 전체 Que 개수가 바뀐경우 rebuild 하도록 key 값에 que 개수를 전달한다.
+                          key: ValueKey<int>(timerController.stageQue.length),
+                        ),
                       )
                     : SizedBox(),
               ),
@@ -58,6 +62,7 @@ class UpperStageQueSection extends StatelessWidget {
     );
   }
 
+  // 오른쪽에서 slide-in으로 나타나는 페이지 전환 효과
   Route _createRoute(Widget targetPage) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => targetPage,
