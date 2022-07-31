@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer_clone/constants/constants.dart';
 import 'package:pomodoro_timer_clone/constants/style.dart';
@@ -90,6 +92,8 @@ class StageQueSecion extends StatefulWidget {
 
 class _StageQueSecionState extends State<StageQueSecion> {
   final GlobalKey<AnimatedListState> _animatedListKey = GlobalKey();
+  late final ScrollController _scrollController;
+  Timer? _scrollTopTimer;
   late TimerController timerController;
 
   @override
@@ -123,12 +127,26 @@ class _StageQueSecionState extends State<StageQueSecion> {
   void initState() {
     super.initState();
     timerController = context.read<TimerController>();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollTopTimer?.isActive ?? false) _scrollTopTimer!.cancel();
+      _scrollTopTimer = Timer(Duration(seconds: 3), () {
+        _scrollController.animateTo(0.0, duration: kTransitionDuration, curve: Curves.linear);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedList(
       key: _animatedListKey,
+      controller: _scrollController,
       initialItemCount: timerController.stageQue.length - timerController.stageIndex,
       scrollDirection: Axis.horizontal,
       itemBuilder: (_, index, animation) {
